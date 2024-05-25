@@ -1,20 +1,22 @@
 const RESPONSES_MSGS = {
-	success: () => {
-		return { status: "OK", message: "Success", data: null };
+	success: (res, data) => {
+		return res
+			.status(200)
+			.json({ status: true, message: "Success", data: data });
 	},
-	error: () => {
-		return {
-			status: "ERROR",
-			message: "Oops! Something went wrong ",
+	error: (res, error = "Oops! Something went wrong") => {
+		return res.status(500).json({
+			status: false,
+			message: error,
 			data: null,
-		};
+		});
 	},
-	invalid: () => {
-		return {
-			status: "ERROR",
+	invalid: res => {
+		return res.status(500).json({
+			status: false,
 			message: "Invalid params",
 			data: null,
-		};
+		});
 	},
 };
 

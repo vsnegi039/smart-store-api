@@ -6,6 +6,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("product", productRouter);
+app.use("/product", productRouter);
 
 module.exports = app;
