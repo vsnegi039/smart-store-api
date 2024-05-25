@@ -1,4 +1,4 @@
-const productSchema = require("../models/product");
+const Product = require("../models/product");
 const staticData = require("../static-data/enums");
 const RESPONSES_MSGS = require("../response");
 
@@ -13,7 +13,7 @@ exports.featuredProducts = async (req, res) => {
 			"motorcycle",
 			"vehicle",
 		];
-		const filteredCategories = categories.filter(
+		const filteredCategories = category.filter(
 			category => !unwantedCategories.includes(category)
 		);
 		const shuffledCategories = filteredCategories.sort(
@@ -21,7 +21,7 @@ exports.featuredProducts = async (req, res) => {
 		);
 		const selectedCategories = shuffledCategories.slice(0, 10);
 		const productPromises = selectedCategories.map(category => {
-			return productSchema.findOne({ category });
+			return Product.findOne({ category });
 		});
 		const products = await Promise.all(productPromises);
 		const validProducts = products.filter(product => product !== null);
@@ -34,7 +34,7 @@ exports.featuredProducts = async (req, res) => {
 exports.product = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const product = await productSchema.findOne({ _id: id });
+		const product = await Product.findOne({ _id: id });
 		if (product) return RESPONSES_MSGS.success(res, product);
 		else
 			return RESPONSES_MSGS.error(

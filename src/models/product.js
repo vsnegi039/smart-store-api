@@ -9,7 +9,7 @@ const ReviewSchema = new mongoose.Schema({
 	reviewverEmail: { type: String },
 });
 
-const Product = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
 	title: { type: String, required: true },
 	description: { type: String, required: true },
 	category: {
@@ -33,4 +33,4 @@ const Product = new mongoose.Schema({
 	thumbnail: { type: String },
 });
 
-module.exports = mongoose.model("productSchema", Product);
+module.exports = mongoose.model("Product", productSchema);
