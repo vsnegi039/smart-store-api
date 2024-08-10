@@ -5,7 +5,7 @@ const RESPONSES_MSGS = {
 			.json({ status: true, message: "Success", data: data });
 	},
 	error: (res, error = "Oops! Something went wrong") => {
-		return res.status(500).json({
+		return res.status(400).json({
 			status: false,
 			message: error,
 			data: null,
