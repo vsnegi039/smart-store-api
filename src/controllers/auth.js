@@ -1,7 +1,9 @@
 const RESPONSES_MSGS = require("../response");
 const User = require("../models/user");
+const SessionUser = require("../models/session-user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { v4: uuidv4 } = require("uuid");
 
 module.exports.signup = async (req, res) => {
 	try {
@@ -78,4 +80,17 @@ function createJWT(data, userId) {
 	};
 	const token = jwt.sign(payload, secretKey, { expiresIn: "168h" });
 	return token;
+}
+
+
+module.exports.generateSession = async (req, res) => {
+	try {
+		const sysId = uuidv4();
+		const resp = new SessionUser({ sysId });
+		await resp.save();
+		return RESPONSES_MSGS.success(res, resp);
+	} catch (err) {
+		console.log(err.message);
+		return RESPONSES_MSGS.error(res, err.message);
+	}
 }

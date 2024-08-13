@@ -1,8 +1,58 @@
+const fs = require("fs");
+const path = require("path");
+const axios = require("axios");
 const productSchema = require("../models/product");
 
+// Function to download and save an image
+const downloadImage = async (url, filepath) => {
+	const response = await axios({ url, responseType: "stream" });
+	return new Promise((resolve, reject) => {
+		const writer = fs.createWriteStream(filepath);
+		response.data.pipe(writer);
+		writer.on("finish", resolve);
+		writer.on("error", reject);
+	});
+};
+
+// Function to save product images and thumbnails
+const saveProductImages = async product => {
+	const imagesDir = path.join(
+		__dirname,
+		"..",
+		"..",
+		"public",
+		"images",
+		"products",
+		product.id.toString()
+	);
+	fs.mkdirSync(imagesDir, { recursive: true });
+
+	const saveImage = async (imageUrl, filename) => {
+		const filepath = path.join(imagesDir, filename);
+		await downloadImage(imageUrl, filepath);
+		return `${process.env.API_URL || "http/localhost:3000"}/images/products/${
+			product.id
+		}/${filename}`;
+	};
+
+	// Download and save images
+	product.images = await Promise.all(
+		product.images.map((imageUrl, index) =>
+			saveImage(imageUrl, `image_${index + 1}.png`)
+		)
+	);
+
+	// Download and save thumbnail
+	product.thumbnail = await saveImage(product.thumbnail, `thumbnail.png`);
+};
+
+// Main function to insert products if not already present
 module.exports = async () => {
 	const product = await productSchema.findOne({});
 	if (!product) {
+		for (let i = 0; i < products.length; i++) {
+			await saveProductImages(products[i]);
+		}
 		await productSchema.insertMany(products);
 	}
 };
