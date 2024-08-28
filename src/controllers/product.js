@@ -199,7 +199,10 @@ module.exports.getFilterProducts = async (req, res) => {
 		const query = {};
 
 		if (searchString) {
-			query.title = { $regex: searchString, $options: "i" };
+			query.$or = [
+				{ title: { $regex: searchString, $options: "i" } },
+				{ tags: { $regex: searchString, $options: "i" } },
+			];
 		}
 
 		if (category) {
