@@ -71,7 +71,7 @@ module.exports.login = async (req, res) => {
 };
 
 function createJWT(data, userId) {
-	const secretKey = process.env.SECRETKEY || "my_secret_key";
+	const secretKey = process.env.SECRETKEY;
 	const payload = {
 		firstName: data.firstName,
 		lastName: data.lastName,

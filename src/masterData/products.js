@@ -30,7 +30,7 @@ const saveProductImages = async product => {
 	const saveImage = async (imageUrl, filename) => {
 		const filepath = path.join(imagesDir, filename);
 		await downloadImage(imageUrl, filepath);
-		return `${process.env.API_URL || "http://localhost:3000"}/images/products/${
+		return `${process.env.API_URL}/images/products/${
 			product.id
 		}/${filename}`;
 	};

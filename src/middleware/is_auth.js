@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 	const token = authHeader.split(" ")[1];
 	let decodedToken;
 	try {
-		const secretKey = process.env.SECRETKEY || "my_secret_key";
+		const secretKey = process.env.SECRETKEY;
 		decodedToken = jwt.verify(token, secretKey);
 		const user = await User.findOne({
 			_id: decodedToken.userId,

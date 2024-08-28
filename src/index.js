@@ -1,8 +1,8 @@
 const app = require("./app");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const port = process.env.PORT || 3000;
-const mongoUrl = process.env.MONGO || "mongodb://127.0.0.1:27017/ecommerce";
+const port = process.env.PORT;
+const mongoUrl = process.env.MONGO;
 const dbInit = require("./masterData/dbInit");
 
 mongoose
