@@ -49,12 +49,12 @@ const saveProductImages = async product => {
 // Main function to insert products if not already present
 module.exports = async () => {
 	const product = await productSchema.findOne({});
-	// if (!product) {
+	if (!product) {
 		for (let i = 0; i < products.length; i++) {
 			await saveProductImages(products[i]);
 		}
 		await productSchema.insertMany(products);
-	// }
+	}
 };
 
 var products = [
