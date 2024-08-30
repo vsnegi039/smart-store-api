@@ -30,9 +30,7 @@ const saveProductImages = async product => {
 	const saveImage = async (imageUrl, filename) => {
 		const filepath = path.join(imagesDir, filename);
 		await downloadImage(imageUrl, filepath);
-		return `${process.env.API_URL}/images/products/${
-			product.id
-		}/${filename}`;
+		return `${process.env.API_URL}/images/products/${product.id}/${filename}`;
 	};
 
 	// Download and save images
@@ -48,9 +46,11 @@ const saveProductImages = async product => {
 
 // Main function to insert products if not already present
 module.exports = async () => {
+	console.log("start");
 	const product = await productSchema.findOne({});
 	if (!product) {
 		for (let i = 0; i < products.length; i++) {
+			console.log(`Saving ${i + 1} product images`);
 			await saveProductImages(products[i]);
 		}
 		await productSchema.insertMany(products);
@@ -185,5 +185,5 @@ var products = [
 		],
 		thumbnail:
 			"https://cdn.dummyjson.com/products/images/vehicle/Charger%20SXT%20RWD/thumbnail.png",
-	}
+	},
 ];
