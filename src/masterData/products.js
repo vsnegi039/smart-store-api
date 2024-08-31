@@ -46,8 +46,7 @@ const saveProductImages = async product => {
 
 // Main function to insert products if not already present
 module.exports = async () => {
-	console.log("start");
-	// await productSchema.deleteMany({});
+	await productSchema.deleteMany({});
 	const product = await productSchema.findOne({});
 	console.log(product);
 	if (!product) {
@@ -56,6 +55,7 @@ module.exports = async () => {
 			await saveProductImages(products[i]);
 		}
 		await productSchema.insertMany(products);
+		console.log("Server set");
 	}
 };
 
