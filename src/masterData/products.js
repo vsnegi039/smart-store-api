@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 const productSchema = require("../models/product");
+const SessionUserSchema = require("../models/session-user");
 
 // Function to download and save an image
 const downloadImage = async (url, filepath) => {
@@ -46,7 +47,10 @@ const saveProductImages = async product => {
 
 // Main function to insert products if not already present
 module.exports = async () => {
-	if(process.env.IS_PRODUCTION==="true") await productSchema.deleteMany({});
+	if (process.env.IS_PRODUCTION === "true") {
+		await productSchema.deleteMany({});
+		await SessionUserSchema.deleteMany({});
+	}
 	const product = await productSchema.findOne({});
 	console.log(product);
 	if (!product) {
